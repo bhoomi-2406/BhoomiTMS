@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technokratos - Events</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #6366f1; /* Tailwind 'indigo-500' */
+            --secondary-color: #764ba2; /* A complementary purple */
+            --text-color-dark: #e2e8f0; /* Tailwind 'slate-200' for dark mode text */
+            --text-color-light: #94a3b8; /* Tailwind 'slate-400' for muted text */
+            --bg-light: #1e293b; /* Tailwind 'slate-800' for light sections in dark mode */
+            --bg-dark: #0f172a; /* Tailwind 'slate-900' for the darkest background */
+            --bg-white: #0f172a; /* For sections that were white, now dark */
+            --shadow-light: 0 2px 20px rgba(0, 0, 0, 0.4);
+            --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.6);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color-light);
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Reusable Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .main-heading {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 3.5rem;
+            color: var(--text-color-dark);
+            font-weight: 700;
+        }
+
+        /* --- Navigation --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.9rem 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color-dark);
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .mobile-menu span {
+            width: 30px;
+            height: 4px;
+            background: var(--text-color-dark);
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        .mobile-menu.active span:nth-child(1) { transform: rotate(-45deg) translate(-6px, 6px); }
+        .mobile-menu.active span:nth-child(2) { opacity: 0; }
+        .mobile-menu.active span:nth-child(3) { transform: rotate(45deg) translate(-6px, -6px); }
+
+        /* --- Events Page Specific Styles --- */
+        .events-page {
+            padding: 150px 0 100px;
+            flex-grow: 1;
+        }
+
+        .event-detail-section {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .event-detail-image {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .event-detail-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: var(--shadow-light);
+            object-fit: cover;
+        }
+        
+        .event-detail-content {
+            flex: 1;
+            color: var(--text-color-light);
+        }
+        
+        .event-detail-content h2 {
+            font-size: 2.5rem;
+            color: var(--text-color-dark);
+            margin-bottom: 1rem;
+        }
+
+        .event-detail-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .event-detail-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-color-light);
+        }
+        
+        .event-detail-meta i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .event-detail-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .register-btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            background: #5856eb;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* --- Footer --- */
+        .footer {
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 0;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .footer p { margin: 0; }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .event-detail-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+                padding: 3rem;
+            }
+            .event-detail-meta {
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-heading { font-size: 2.5rem; }
+            .event-detail-content h2 { font-size: 2rem; }
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--bg-light);
+                width: 100%;
+                text-align: center;
+                transition: 0.4s ease-in-out;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 2rem 0;
+                max-height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+            .nav-menu.active { left: 0; }
+            .nav-link { margin: 1rem 0; font-size: 1.2rem; }
+            .mobile-menu { display: flex; }
+        }
+
+        @media (max-width: 480px) {
+            .main-heading { font-size: 2rem; }
+            .event-detail-section { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" role="navigation" aria-label="Main Navigation">
+        <div class="nav-container container">
+            <a href="index.html" class="logo" aria-label="Technokratos Home">Technokratos</a>
+            <ul class="nav-menu" role="menubar">
+                <li role="none"><a href="index.html" class="nav-link" role="menuitem">Home</a></li>
+                <li role="none"><a href="about.html" class="nav-link" role="menuitem">About Us</a></li>
+                <li role="none"><a href="events.html" class="nav-link" role="menuitem">Events</a></li>
+                <li role="none"><a href="query.html" class="nav-link" role="menuitem">Queries</a></li>
+                <li role="none"><a href="feedback.html" class="nav-link" role="menuitem">Feedback</a></li>
+                <li role="none"><a href="login.php" class="nav-link" role="menuitem">Login</a></li>
+            </ul>
+            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="nav-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="events-page">
+        <div class="container">
+            <h1 class="main-heading">Upcoming Events</h1>
+
+            <!-- Dance Competition -->
+            <section id="dance-competition" class="event-detail-section">
+                <div class="event-detail-image">
+                    <img src="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="People dancing at a club">
+                </div>
+                <div class="event-detail-content">
+                    <h2>Dance Competition</h2>
+                    <div class="event-detail-meta">
+                        <span><i class="fa-solid fa-calendar-alt"></i> March 15, 2024</span>
+                        <span><i class="fa-solid fa-clock"></i> 6:00 PM - 9:00 PM</span>
+                        <span><i class="fa-solid fa-location-dot"></i> College Auditorium</span>
+                    </div>
+                    <p>Get ready to groove and show off your best moves! The annual dance competition is back, featuring solo, duo, and group categories. Whether you're a beginner or a professional, this is your chance to shine on the main stage. Prizes will be awarded to the top three performers in each category.</p>
+                    <a href="#" class="register-btn">Register Now</a>
+                </div>
+            </section>
+
+            <!-- Singing Competition -->
+            <section id="singing-competition" class="event-detail-section">
+                <div class="event-detail-image">
+                    <img src="https://img.freepik.com/premium-photo/poetry-slam-stage-ar-generative-ai_1169639-103228.jpg" alt="A classic microphone on stage with a blurred background of blue lights.">
+                </div>
+                <div class="event-detail-content">
+                    <h2>Singing Competition</h2>
+                    <div class="event-detail-meta">
+                        <span><i class="fa-solid fa-calendar-alt"></i> April 2, 2024</span>
+                        <span><i class="fa-solid fa-clock"></i> 7:00 PM - 10:00 PM</span>
+                        <span><i class="fa-solid fa-location-dot"></i> Main Stage Amphitheater</span>
+                    </div>
+                    <p>Do you have a voice that can captivate an audience? Join our singing competition and compete for the title of "Technokratos's Best Vocalist." From pop to classical, all genres are welcome. Our panel of judges will be looking for raw talent and stage presence. Don't miss this opportunity to showcase your talent!</p>
+                    <a href="#" class="register-btn">Register Now</a>
+                </div>
+            </section>
+            
+            <!-- Poetry Slam -->
+            <section id="poetry-slam" class="event-detail-section">
+                <div class="event-detail-image">
+                    <img src="https://th.bing.com/th/id/OIP.Fmgc5ALRE6jqkSUXQTKfhgAAAA?w=155&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="An old open book with a quill pen on a wooden table.">
+                </div>
+                <div class="event-detail-content">
+                    <h2>Poetry Slam</h2>
+                    <div class="event-detail-meta">
+                        <span><i class="fa-solid fa-calendar-alt"></i> April 20, 2024</span>
+                        <span><i class="fa-solid fa-clock"></i> 5:30 PM - 8:30 PM</span>
+                        <span><i class="fa-solid fa-location-dot"></i> College Library Courtyard</span>
+                    </div>
+                    <p>Unleash your inner poet! This event is a celebration of the spoken word, where students perform their original poems in front of a live audience. Share your stories, ideas, and emotions in a supportive and creative environment. The top poets will be published in the college's literary magazine.</p>
+                    <a href="#" class="register-btn">Register Now</a>
+                </div>
+            </section>
+            
+            <!-- Musical Chairs Challenge -->
+            <section id="musical-chairs-challenge" class="event-detail-section">
+                <div class="event-detail-image">
+                    <img src="https://th.bing.com/th/id/OIP.BpXA7Nk8OLDf5ZUwKGEzVgHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Group of people playing musical chairs, rushing to find a seat">
+                </div>
+                <div class="event-detail-content">
+                    <h2>Musical Chairs Challenge</h2>
+                    <div class="event-detail-meta">
+                        <span><i class="fa-solid fa-calendar-alt"></i> May 5, 2024</span>
+                        <span><i class="fa-solid fa-clock"></i> 4:00 PM - 6:00 PM</span>
+                        <span><i class="fa-solid fa-location-dot"></i> Student Union Hall</span>
+                    </div>
+                    <p>Ready for a fun-filled, high-energy challenge? The Musical Chairs Challenge is a classic game with a competitive twist. Compete against your friends and fellow students to be the last one standing and win a grand prize! The rules are simple, but the competition is fierce!</p>
+                    <a href="#" class="register-btn">Register Now</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p>&copy; 2024 Technokratos. All rights reserved. | Empowering College Events</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navMenu = document.querySelector('.nav-menu');
+            mobileMenu.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                const isExpanded = mobileMenu.classList.contains('active');
+                mobileMenu.setAttribute('aria-expanded', isExpanded);
+            });
+            navMenu.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        mobileMenu.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
