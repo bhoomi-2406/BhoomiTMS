@@ -1,0 +1,87 @@
+/* Example for login.css */
+
+/* Hide forms by default */
+.form-box {
+    display: none;
+    /* Other styling for your form containers */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: 20px auto; /* Center the form */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Show the active form */
+.form-box.active {
+    display: block;
+}
+
+/* Styles for error messages */
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    text-align: center;
+    background-color: #ffeaea;
+    border: 1px solid #ff0000;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/* Styles for success messages */
+.success-message {
+    color: green;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    text-align: center;
+    background-color: #eaffea;
+    border: 1px solid #008000;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/* Add or adjust other styles as needed for input-group, labels, buttons etc. */
+.input-group {
+    margin-bottom: 15px;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.input-group input[type="email"],
+.input-group input[type="password"],
+.input-group input[type="text"],
+.input-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding in width */
+}
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.register-link, .login-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+.register-link a, .login-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+.register-link a:hover, .login-link a:hover {
+    text-decoration: underline;
+}
