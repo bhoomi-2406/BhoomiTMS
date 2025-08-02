@@ -1,1 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technokratos - Feedback</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #6366f1; /* Tailwind 'indigo-500' */
+            --secondary-color: #764ba2; /* A complementary purple */
+            --text-color-dark: #e2e8f0; /* Tailwind 'slate-200' for dark mode text */
+            --text-color-light: #94a3b8; /* Tailwind 'slate-400' for muted text */
+            --bg-light: #1e293b; /* Tailwind 'slate-800' for light sections in dark mode */
+            --bg-dark: #0f172a; /* Tailwind 'slate-900' for the darkest background */
+            --bg-white: #0f172a; /* For sections that were white, now dark */
+            --shadow-light: 0 2px 20px rgba(0, 0, 0, 0.4);
+            --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.6);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color-light);
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Reusable Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .main-heading {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 3.5rem;
+            color: var(--text-color-dark);
+            font-weight: 700;
+        }
+
+        /* --- Navigation --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.9rem 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color-dark);
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .mobile-menu span {
+            width: 30px;
+            height: 4px;
+            background: var(--text-color-dark);
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        .mobile-menu.active span:nth-child(1) { transform: rotate(-45deg) translate(-6px, 6px); }
+        .mobile-menu.active span:nth-child(2) { opacity: 0; }
+        .mobile-menu.active span:nth-child(3) { transform: rotate(45deg) translate(-6px, -6px); }
+
+        /* --- Feedback Page Specific Styles --- */
+        .feedback-page {
+            padding: 150px 0 100px;
+            flex-grow: 1;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .testimonial-card {
+            background: var(--bg-light);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-medium);
+            transition: transform 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-rating {
+            color: #f59e0b;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--text-color-light);
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--text-color-dark);
+        }
+
+        .feedback-form-section {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 650px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--text-color-dark);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #475569;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            color: var(--text-color-dark);
+            background-color: var(--bg-dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .submit-btn:hover {
+            background: #5856eb;
+            transform: translateY(-2px);
+        }
+
+        /* Star Rating for Feedback */
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+            color: #475569;
+            font-size: 1.5rem;
+            direction: rtl;
+            justify-content: flex-start;
+        }
+        .rating-stars input[type="radio"] { display: none; }
+        .rating-stars label { cursor: pointer; transition: color 0.2s ease; }
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label { color: #f59e0b; }
+        .rating-stars input[type="radio"]:checked ~ label { color: #f59e0b; }
+        
+        #success-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--text-color-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #success-message p {
+            margin: 0;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        #success-message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 0;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .footer p { margin: 0; }
+        
+        /* --- Animations --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .anim-element {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .section-title { font-size: 2.2rem; }
+            .main-heading { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .main-heading { font-size: 2.5rem; }
+            .testimonial-card { padding: 2rem; }
+            .feedback-form-section { padding: 2rem 1.5rem; }
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--bg-light);
+                width: 100%;
+                text-align: center;
+                transition: 0.4s ease-in-out;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 2rem 0;
+                max-height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+            .nav-menu.active { left: 0; }
+            .nav-link { margin: 1rem 0; font-size: 1.2rem; }
+            .mobile-menu { display: flex; }
+        }
+
+        @media (max-width: 480px) {
+            .main-heading { font-size: 2rem; }
+            .section-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" role="navigation" aria-label="Main Navigation">
+        <div class="nav-container container">
+            <a href="index.html" class="logo" aria-label="Technokratos Home">Technokratos</a>
+            <ul class="nav-menu" role="menubar">
+                <li role="none"><a href="index.html" class="nav-link" role="menuitem">Home</a></li>
+                <li role="none"><a href="about.html" class="nav-link" role="menuitem">About Us</a></li>
+                <li role="none"><a href="events.html" class="nav-link" role="menuitem">Events</a></li>
+                <li role="none"><a href="query.html" class="nav-link" role="menuitem">Queries</a></li>
+                <li role="none"><a href="feedback.html" class="nav-link" role="menuitem">Feedback</a></li>
+                <li role="none"><a href="login.php" class="nav-link" role="menuitem">Login</a></li>
+            </ul>
+            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="nav-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="feedback-page">
+        <div class="container">
+            <h1 class="main-heading">Technokratos</h1>
+            <h2 class="section-title">Previous Year's Feedback</h2>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card anim-element">
+                    <div class="testimonial-rating" aria-label="5 stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The events organized by Technokratos were fantastic! The management was flawless and the atmosphere was incredible. I can't wait for next year."</p>
+                    <p class="testimonial-author">- Jane Doe</p>
+                </div>
+                <div class="testimonial-card anim-element">
+                    <div class="testimonial-rating" aria-label="4 stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I really enjoyed the events, especially the musical chair challenge. The registration process was super smooth and easy to navigate. A great experience overall!"</p>
+                    <p class="testimonial-author">- John Smith</p>
+                </div>
+                <div class="testimonial-card anim-element">
+                    <div class="testimonial-rating" aria-label="5 stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The poetry slam was a beautiful and emotional event. The platform truly helped me discover and connect with other creative minds on campus. Highly recommend!"</p>
+                    <p class="testimonial-author">- Emily White</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">Share Your Feedback</h2>
+
+            <div class="feedback-form-section anim-element">
+                <form class="feedback-form" id="feedbackForm" aria-label="Feedback Form">
+                    <div class="form-group">
+                        <label for="feedbackName">Full Name</label>
+                        <input type="text" id="feedbackName" name="name" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackEmail">Email Address</label>
+                        <input type="email" id="feedbackEmail" name="email" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackMessage">Your Feedback</label>
+                        <textarea id="feedbackMessage" name="message" rows="5" required aria-required="true"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating</label>
+                        <div class="rating-stars" role="radiogroup" aria-label="Rating">
+                            <input type="radio" name="rating" id="star5" value="5" aria-label="5 stars">
+                            <label for="star5" class="fa-solid fa-star"></label>
+                            <input type="radio" name="rating" id="star4" value="4" aria-label="4 stars">
+                            <label for="star4" class="fa-solid fa-star"></label>
+                            <input type="radio" name="rating" id="star3" value="3" aria-label="3 stars">
+                            <label for="star3" class="fa-solid fa-star"></label>
+                            <input type="radio" name="rating" id="star2" value="2" aria-label="2 stars">
+                            <label for="star2" class="fa-solid fa-star"></label>
+                            <input type="radio" name="rating" id="star1" value="1" aria-label="1 star">
+                            <label for="star1" class="fa-solid fa-star"></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Feedback</button>
+                    <div id="success-message">
+                        <p>Thank you for your feedback!</p>
+                        <p>Your review helps us improve.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p>&copy; 2024 Technokratos. All rights reserved. | Empowering College Events</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navMenu = document.querySelector('.nav-menu');
+            mobileMenu.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                const isExpanded = mobileMenu.classList.contains('active');
+                mobileMenu.setAttribute('aria-expanded', isExpanded);
+            });
+            navMenu.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        mobileMenu.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+
+            // Feedback Form Submission with animated success message
+            const feedbackForm = document.getElementById('feedbackForm');
+            const successMessage = document.getElementById('success-message');
+
+            if (feedbackForm && successMessage) {
+                feedbackForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Basic client-side validation
+                    const nameInput = document.getElementById('feedbackName');
+                    const emailInput = document.getElementById('feedbackEmail');
+                    const messageInput = document.getElementById('feedbackMessage');
+                    const ratingInput = document.querySelector('input[name="rating"]:checked');
+
+                    if (!nameInput.value || !emailInput.value || !messageInput.value || !ratingInput) {
+                        return; // Exit if any field is empty
+                    }
+
+                    // Simulate form submission with a delay
+                    setTimeout(() => {
+                        feedbackForm.style.opacity = '0.3'; // Visually dim the form
+                        feedbackForm.style.pointerEvents = 'none'; // Disable interactions
+
+                        successMessage.classList.add('show');
+                        
+                        // Hide message and re-enable form after a few seconds
+                        setTimeout(() => {
+                            successMessage.classList.remove('show');
+                            feedbackForm.style.opacity = '1';
+                            feedbackForm.style.pointerEvents = 'auto';
+                            feedbackForm.reset();
+                            document.querySelectorAll('.rating-stars input').forEach(input => input.checked = false);
+                        }, 3000); // Hide message after 3 seconds
+                    }, 500); // 0.5 second delay before showing message
+                });
+            }
+        });
+    </script>
+</body>
+</html>
 
