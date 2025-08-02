@@ -1,0 +1,148 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #fffaf5;
+  color: #333;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #ff6ec4, #7873f5);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.3em;
+}
+
+/* About Section */
+.about {
+  background: url('images/fest-background.jpg') center/cover no-repeat;
+  position: relative;
+  margin: 50px auto;
+  text-align: center;
+  padding: 80px 20px;
+  color: white;
+}
+
+.about .overlay {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  max-width: 900px;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.about h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #ffdb58;
+}
+
+.about p {
+  font-size: 1.1em;
+  opacity: 0.95;
+  line-height: 1.7;
+}
+
+/* Team Section */
+.team {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.team h2 {
+  text-align: center;
+  font-size: 2em;
+  color: #ff6ec4;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #ff6ec4;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* Card Grid */
+.card-grid {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 280px;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  text-align: center;
+}
+
+.card:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+}
+
+.img-container {
+  margin-top: 20px;
+}
+
+.img-container img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #ff6ec4;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .img-container img {
+  transform: scale(1.1);
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-content h3 {
+  color: #7873f5;
+  margin-bottom: 5px;
+}
+
+.card-content .description {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, max-height 0.5s ease;
+}
+
+.card:hover .description {
+  opacity: 1;
+  max-height: 100px;
+  margin-top: 10px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 30px;
+  background-color: #7873f5;
+  color: white;
+  margin-top: 60px;
+}
