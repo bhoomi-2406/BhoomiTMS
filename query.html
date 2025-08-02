@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technokratos - Have a Query?</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #6366f1; /* Tailwind 'indigo-500' */
+            --secondary-color: #764ba2; /* A complementary purple */
+            --text-color-dark: #e2e8f0; /* Tailwind 'slate-200' for dark mode text */
+            --text-color-light: #94a3b8; /* Tailwind 'slate-400' for muted text */
+            --bg-light: #1e293b; /* Tailwind 'slate-800' for light sections in dark mode */
+            --bg-dark: #0f172a; /* Tailwind 'slate-900' for the darkest background */
+            --bg-white: #0f172a; /* For sections that were white, now dark */
+            --shadow-light: 0 2px 20px rgba(0, 0, 0, 0.4);
+            --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.6);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color-light);
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Reusable Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .main-heading {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 3.5rem;
+            color: var(--text-color-dark);
+            font-weight: 700;
+        }
+
+        /* --- Queries Section (Main Content) --- */
+        .queries-page {
+            padding: 150px 0 100px;
+            flex-grow: 1; /* Pushes footer to the bottom */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-form-wrapper {
+            width: 100%;
+        }
+        
+        .contact-form {
+            max-width: 650px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--text-color-dark);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #475569;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            color: var(--text-color-dark);
+            background-color: var(--bg-dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%2394a3b8' d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5rem;
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .submit-btn:hover {
+            background: #5856eb;
+            transform: translateY(-2px);
+        }
+
+        #success-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--text-color-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #success-message p {
+            margin: 0;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        #success-message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- FAQ Section --- */
+        .faq-section {
+            margin-top: 5rem;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .faq-container {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #334155;
+            padding: 1rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-item details {
+            color: var(--text-color-dark);
+        }
+
+        .faq-item summary {
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+            outline: none;
+            list-style: none; /* Hide default arrow */
+            position: relative;
+        }
+
+        .faq-item summary::after {
+            content: "+";
+            position: absolute;
+            right: 0;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item details[open] summary::after {
+            content: "-";
+            transform: rotate(180deg);
+        }
+
+        .faq-item p {
+            margin-top: 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary-color);
+            color: var(--text-color-light);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 0;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .footer p { margin: 0; }
+
+        /* --- Animations --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .anim-element {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .section-title { font-size: 2.2rem; }
+            .main-heading { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .main-heading { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .section-title { font-size: 1.8rem; }
+            .main-heading { font-size: 2rem; }
+            .contact-form, .faq-container { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <main class="queries-page" aria-labelledby="queries-title">
+        <div class="container faq-section">
+            <h1 class="main-heading">Technokratos</h1>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container anim-element">
+                <div class="faq-item">
+                    <details>
+                        <summary>How do I register for an event?</summary>
+                        <p>You can register for any event by navigating to the "Events" page from our main site. Click on the event you're interested in, and you'll find a registration form with all the necessary details and instructions.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>How can I become a volunteer?</summary>
+                        <p>We are always looking for enthusiastic volunteers! Please submit a query through the form above, selecting "Volunteer Opportunities." Our team will get in touch with you with more information on how to join us.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>How can my company sponsor an event?</summary>
+                        <p>For all sponsorship inquiries, please use the contact form and select "Sponsorship & Partnership Inquiry." Our events team will review your request and reach out to discuss potential collaboration opportunities.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>I'm experiencing a technical issue with the website.</summary>
+                        <p>We're sorry to hear that! Please provide a detailed description of the issue you are facing in the query form, selecting "Website Technical Issues." Our support team will work to resolve it as quickly as possible.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>Media and Press Inquiries</summary>
+                        <p>For all media and press-related questions, please use the contact form above, selecting the "Media and Press Inquiries" option. Our media relations team will respond to your request promptly.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>Lost and Found during an Event</summary>
+                        <p>If you have lost or found an item at one of our events, please contact a staff member at the event's information desk. Alternatively, you can use the contact form above, choosing the "Lost and Found" query type, and we will assist you as soon as possible.</p>
+                    </details>
+                </div>
+                <div class="faq-item">
+                    <details>
+                        <summary>General Information</summary>
+                        <p>For any other questions not covered in the FAQs, please submit a query using the form above with the "General Information" option. We're here to help!</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container contact-form-wrapper">
+            <h2 id="queries-title" class="section-title">Have Questions?</h2>
+            <form class="contact-form anim-element" id="queryForm" aria-label="Contact Us Form">
+                <div class="form-group">
+                    <label for="queryName">Full Name</label>
+                    <input type="text" id="queryName" name="name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="queryEmail">Email Address</label>
+                    <input type="email" id="queryEmail" name="email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="predefinedQuery">Predefined Queries</label>
+                    <select id="predefinedQuery" name="predefinedQuery">
+                        <option value="">Select a common query...</option>
+                        <option value="Event Registration Assistance">Event Registration Assistance</option>
+                        <option value="Volunteer Opportunities">Volunteer Opportunities</option>
+                        <option value="Sponsorship & Partnership Inquiry">Sponsorship & Partnership Inquiry</option>
+                        <option value="Website Technical Issues">Website Technical Issues</option>
+                        <option value="Media and Press Inquiries">Media and Press Inquiries</option>
+                        <option value="Lost and Found during an Event">Lost and Found during an Event</option>
+                        <option value="General Information">General Information</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="queryMessage">Your Query</label>
+                    <textarea id="queryMessage" name="message" rows="5" required aria-required="true"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Query</button>
+                <div id="success-message">
+                    <p>Thank you for your query!</p>
+                    <p>We'll get back to you soon.</p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p>&copy; 2024 Technokratos. All rights reserved. | Empowering College Events</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Queries Form Submission with animated success message
+            const queryForm = document.getElementById('queryForm');
+            const successMessage = document.getElementById('success-message');
+            const predefinedQuery = document.getElementById('predefinedQuery');
+            const queryMessage = document.getElementById('queryMessage');
+
+            // Handle predefined query selection
+            predefinedQuery.addEventListener('change', (e) => {
+                const selectedValue = e.target.value;
+                if (selectedValue) {
+                    queryMessage.value = `Regarding: ${selectedValue}. \n\n My question is: `;
+                    queryMessage.focus(); // Focus on the textarea for user input
+                }
+            });
+
+            if (queryForm && successMessage) {
+                queryForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Basic client-side validation
+                    const nameInput = document.getElementById('queryName');
+                    const emailInput = document.getElementById('queryEmail');
+                    const messageInput = document.getElementById('queryMessage');
+
+                    if (!nameInput.value || !emailInput.value || !messageInput.value) {
+                        return; // Exit if any field is empty
+                    }
+
+                    // Simulate form submission with a delay
+                    setTimeout(() => {
+                        queryForm.style.opacity = '0.3'; // Visually dim the form
+                        queryForm.style.pointerEvents = 'none'; // Disable interactions
+
+                        successMessage.classList.add('show');
+                        
+                        // Hide message and re-enable form after a few seconds
+                        setTimeout(() => {
+                            successMessage.classList.remove('show');
+                            queryForm.style.opacity = '1';
+                            queryForm.style.pointerEvents = 'auto';
+                            queryForm.reset();
+                        }, 3000); // Hide message after 3 seconds
+                    }, 500); // 0.5 second delay before showing message
+                });
+            }
+        });
+    </script>
+</body>
+</html>
