@@ -52,8 +52,6 @@ $conn->close(); // Close the database connection after fetching all data
             <li><a href="admin_dashboard.php" class="active"><i class="fas fa-home"></i>Dashboard</a></li>
             <li><a href="#"><i class="fas fa-users"></i>User Management</a></li>
             <li><a href="#"><i class="fas fa-calendar-alt"></i>Event Management</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i>Analytics & Reports</a></li>
-            <li><a href="#"><i class="fas fa-envelope"></i>Communication Tools</a></li>
             <li><a href="#"><i class="fas fa-question-circle"></i>Queries & Feedback</a></li>
         </ul>
         <div class="sidebar-footer">
